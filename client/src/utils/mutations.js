@@ -23,3 +23,13 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const DELETE_BOOK = gql`
+  mutation ($bookId: ID) {
+    deleteBook(bookId: $bookId) {
+      _id
+      username
+      savedBooks
+    }
+  }
+`
