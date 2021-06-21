@@ -29,16 +29,14 @@ const resolvers = {
       return { token, user };
     },
 
-    login: async (parent, { body }) => {
-      const user = await User.findOne({
-        $or: [{ username: body.username }, { email: body.email }],
-      });
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({email: email});
 
       if (!user) {
         return { message: "Cannot find this user."}
       }
 
-      const correctPw = await user.isCorrectPassword(body.password)
+      const correctPw = await user.isCorrectPassword(password)
 
       if (!correctPw) {
         return { message: "Wrong password." }
