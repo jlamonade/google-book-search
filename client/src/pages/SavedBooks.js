@@ -6,7 +6,10 @@ import {
   Card,
   Button,
 } from "react-bootstrap";
+// import both use query and use mutation
 import { useQuery, useMutation } from "@apollo/client";
+
+// import the mutations and queries
 import { GET_ME } from "../utils/queries";
 import { DELETE_BOOK } from "../utils/mutations";
 
@@ -14,9 +17,10 @@ import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
 
 const SavedBooks = () => {
+  // initialize the hooks here
   const { loading, data } = useQuery(GET_ME);
   const [removeBook] = useMutation(DELETE_BOOK);
-  const userData = data?.me || [];
+  const userData = data?.me || []; // query for user data using the jwt token context to get user id
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -27,7 +31,7 @@ const SavedBooks = () => {
     }
 
     try {
-      await removeBook({
+      await removeBook({ // use remove book hook to remove book by id through graphql api
         variables: { bookId: bookId },
       });
       // upon success, remove book's id from localStorage
