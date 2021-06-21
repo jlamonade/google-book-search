@@ -38,7 +38,7 @@ const SignupForm = () => {
       const { data } = await createUser({ // use mutation to make api requests through graphql
         variables: { ...userFormData }
       });
-      Auth.login(data.createUser.token);
+      Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
