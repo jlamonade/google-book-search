@@ -12,6 +12,7 @@ const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  // initialized useMutation here
   const [login] = useMutation(LOGIN_USER)
 
   const handleInputChange = (event) => {
@@ -30,6 +31,7 @@ const LoginForm = () => {
     }
 
     try {
+      // use mutation to log in through graphql api
       const { data } = await login({
         variables: { ...userFormData }
       });
