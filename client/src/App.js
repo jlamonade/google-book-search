@@ -11,10 +11,12 @@ import SearchBooks from "./pages/SearchBooks";
 import SavedBooks from "./pages/SavedBooks";
 import Navbar from "./components/Navbar";
 
+// set up graphql uri
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
 
+// set up context with the users jwt token if they are logged in
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token')
 
@@ -26,6 +28,7 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
+// instantiate the apolloclient with the context
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache()
