@@ -4,7 +4,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 // use mutation
 import { useMutation } from '@apollo/client'
 
-// import { createUser } from '../utils/API';
+// import mutation from mutations
 import { ADD_USER } from '../utils/mutations'
 
 import Auth from '../utils/auth';
@@ -16,6 +16,7 @@ const SignupForm = () => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
+  // init useMutation function here
   const [createUser] = useMutation(ADD_USER)
 
   const handleInputChange = (event) => {
@@ -34,11 +35,9 @@ const SignupForm = () => {
     }
     
     try {
-      const { data } = await createUser({
+      const { data } = await createUser({ // use mutation to make api requests through graphql
         variables: { ...userFormData }
       });
-      console.log(data)
-      console.log(data.createUser.user);
       Auth.login(data.createUser.token);
     } catch (err) {
       console.error(err);
