@@ -3,23 +3,17 @@ const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
-    getSingleUser: async (parent, { user = null, params }) => {
-      const foundUser = await User.findOne({
-        $or: [
-          { _id: user ? user._id : params.id },
-          { username: params.username },
-        ],
-      });
-
-      if (!foundUser) {
-        return { message: "Cannot find a user with this id!" };
+    me: async (parent, args, context) => {
+      if (await context.user._id) {
+        const foundUser = await User.findById(context.user._id);
+        console.log(await foundUser)
+        return foundUser;
       }
-      return foundUser;
     },
   },
 
   Mutation: {
-    createUser: async (parent, { username, email, password }) => {
+    addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
 
       if (!user) {
@@ -46,10 +40,10 @@ const resolvers = {
       return { token, user }
     },
 
-    saveBook: async (parent, {user, body}) => {
+    saveBook: async (parent, { user, body }) => {
       try {
         const updatedUser = await User.findOneAndUpdate(
-          { _id: user._id },
+          { _id: context.user._id },
           { $addToSet: { savedBooks: body } },
           { new: true, runValidators: true }
         )
