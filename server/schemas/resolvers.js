@@ -6,7 +6,6 @@ const resolvers = {
     me: async (parent, args, context) => {
       if (await context.user._id) {
         const foundUser = await User.findById(context.user._id);
-        console.log(await foundUser)
         return foundUser;
       }
     },
@@ -53,10 +52,11 @@ const resolvers = {
       }
     },
 
-    deleteBook: async (parent, bookId, context) => {
+    deleteBook: async (parent, { bookId }, context) => {
+      console.log('[resolvers] ' + bookId)
       const updatedUser = await User.findOneAndUpdate(
         { _id: context.user._id },
-        { $pull: { savedBooks: { bookId: params.bookId } } },
+        { $pull: { savedBooks: { bookId: bookId } } },
         { new: true }
       )
       if (!updatedUser) {
