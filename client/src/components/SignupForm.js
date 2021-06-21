@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+
+// use mutation
 import { useMutation } from '@apollo/client'
 
 // import { createUser } from '../utils/API';
@@ -32,17 +34,12 @@ const SignupForm = () => {
     }
 
     try {
-      const response = await createUser({
-        variables: userFormData
+      const { data } = await createUser({
+        variables: { ...userFormData }
       });
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
+      console.log(data)
+      console.log(data.createUser.user);
+      Auth.login(data.createUser.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
@@ -61,7 +58,7 @@ const SignupForm = () => {
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         {/* show alert if server response is bad */}
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          incorrect email or password
+          Something went wrong with the sign up process.
         </Alert>
 
         <Form.Group>
