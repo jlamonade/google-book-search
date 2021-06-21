@@ -24,8 +24,25 @@ export const LOGIN_USER = gql`
   }
 `;
 
+export const ADD_BOOK = gql`
+  mutation addBook($book: BookInput!) {
+    saveBook(book: $book) {
+      _id
+      username
+      savedBooks {
+        bookId
+        title
+        authors
+        description
+        image
+        link
+      }
+    }
+  }
+`
+
 export const DELETE_BOOK = gql`
-  mutation deleteBook($bookId: String!) {
+  mutation ($bookId: String!) {
     deleteBook(bookId: $bookId) {
       _id
       username
