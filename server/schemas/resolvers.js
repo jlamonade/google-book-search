@@ -53,7 +53,6 @@ const resolvers = {
     },
 
     deleteBook: async (parent, { bookId }, context) => {
-      console.log('[resolvers] ' + bookId)
       const updatedUser = await User.findOneAndUpdate(
         { _id: context.user._id },
         { $pull: { savedBooks: { bookId: bookId } } },
